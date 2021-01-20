@@ -22,6 +22,7 @@ import (
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
+	"github.com/kaseiaoki/meow-hype/notice"
 )
 
 var cfgFile string
@@ -35,7 +36,7 @@ func newRootCmd() *cobra.Command {
 		Short: "meow! this is memo",
 		Long:  `meow! this is memo that had TO DO`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println("meow!");
+			notice.Pop("meow-hype", "meow!", "meow!!", "")
 			return nil
 		},
 		// Uncomment the following line if your bare application

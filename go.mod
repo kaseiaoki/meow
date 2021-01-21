@@ -3,6 +3,8 @@ module github.com/kaseiaoki/meow-hype
 go 1.15
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/martinlindhe/notify v0.0.0-20181008203735-20632c9a275a
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect

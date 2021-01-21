@@ -31,6 +31,7 @@ import (
 )
 
 var cfgFile string
+var endless bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = newRootCmd()
@@ -62,7 +63,7 @@ func newRootCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// test run
 			if len(args) == 0 {
-				notice.Pop("meow-hype", "meow-hype", "meow!!")
+				notice.Pop("meow-hype", "meow-hype", "meow!!", endless)
 				return nil
 			}
 
@@ -78,7 +79,7 @@ func newRootCmd() *cobra.Command {
 			timer := time.NewTimer(td * time.Second)
 
 			<-timer.C
-			notice.Pop("meow-hype", "meow-hype", textArg)
+			notice.Pop("meow-hype", "meow-hype", textArg, endless)
 
 			return nil
 
@@ -103,7 +104,7 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.redirect-test.yaml)")
-
+	rootCmd.PersistentFlags().BoolVar(&endless, "e", false, "endless")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.a
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

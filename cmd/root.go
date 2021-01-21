@@ -16,13 +16,18 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+	"strconv"
+	"time"
 
+	"github.com/spf13/cobra"
+
+	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/kaseiaoki/meow-hype/notice"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	"github.com/kaseiaoki/meow-hype/notice"
 )
 
 var cfgFile string
@@ -32,16 +37,52 @@ var rootCmd = newRootCmd()
 
 func newRootCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "host",
-		Short: "meow! this is memo",
-		Long:  `meow! this is memo that had TO DO`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			notice.Pop("meow-hype", "meow-hype", "meow!!")
+		Use:   "mh",
+		Short: "meow! this is notifer!",
+		Long:  `meow! flag1 -> time(default second). flag2 -> note.`,
+		Args: func(cmd *cobra.Command, args []string) error {
+			if 2 < len(args) {
+				return errors.New("Default arguments are time and text only.")
+			}
+
+			if 1 < len(args) {
+
+				e := validation.Validate(args[1],
+					validation.Required,     // 空を許容しない
+					validation.Length(1, 5), // 長さが5から100まで
+				)
+				if e != nil {
+					fmt.Println(e)
+					return errors.New("Default arguments are time and text only.")
+				}
+
+			}
 			return nil
 		},
-		// Uncomment the following line if your bare application
-		// has an action associated with it:
-		// Run: func(cmd *cobra.Command, args []string) { },
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// test run
+			if len(args) == 0 {
+				notice.Pop("meow-hype", "meow-hype", "meow!!")
+				return nil
+			}
+
+			textArg := args[0]
+			// wrap to time duration
+			timeArg, e := strconv.Atoi(args[1])
+			if e != nil {
+				fmt.Println(e)
+			}
+
+			td := time.Duration(timeArg)
+
+			timer := time.NewTimer(td * time.Second)
+
+			<-timer.C
+			notice.Pop("meow-hype", "meow-hype", textArg)
+
+			return nil
+
+		},
 	}
 }
 
@@ -66,6 +107,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.a
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.PersistentFlags().BoolVar(&reverse, "r", false, "Reverse resolution")
 }
 
 // initConfig reads in config file and ENV variables if set.

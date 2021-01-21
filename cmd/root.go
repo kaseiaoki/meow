@@ -31,7 +31,11 @@ import (
 )
 
 var cfgFile string
-var endless bool
+var (
+	endless bool
+	minute bool
+	hour    bool
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = newRootCmd()
@@ -45,7 +49,7 @@ func newRootCmd() *cobra.Command {
 			if 2 < len(args) {
 				return errors.New("Default arguments are time and text only.")
 			}
-
+		
 			if 1 < len(args) {
 
 				e := validation.Validate(args[1],
@@ -66,7 +70,12 @@ func newRootCmd() *cobra.Command {
 				notice.Pop("meow-hype", "meow-hype", "meow!!", endless)
 				return nil
 			}
-
+			// message test run
+			if len(args) == 1 {
+				notice.Pop("meow-hype", "meow-hype", args[0], endless)
+				return nil
+			}
+			// send toDO
 			textArg := args[0]
 			// wrap to time duration
 			timeArg, e := strconv.Atoi(args[1])
@@ -75,8 +84,14 @@ func newRootCmd() *cobra.Command {
 			}
 
 			td := time.Duration(timeArg)
-
 			timer := time.NewTimer(td * time.Second)
+			if minute {
+				timer = time.NewTimer(td * time.Minute)
+			} else if hour  {
+				timer = time.NewTimer(td * time.Hour)
+			}
+
+			
 
 			<-timer.C
 			notice.Pop("meow-hype", "meow-hype", textArg, endless)
@@ -105,6 +120,8 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.redirect-test.yaml)")
 	rootCmd.PersistentFlags().BoolVar(&endless, "e", false, "endless")
+	rootCmd.PersistentFlags().BoolVar(&hour, "h", false, "hour")
+	rootCmd.PersistentFlags().BoolVar(&minute, "m", false, "minute")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.a
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

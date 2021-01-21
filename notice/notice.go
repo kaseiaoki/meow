@@ -9,7 +9,7 @@ import (
 	"gopkg.in/toast.v1"
 )
 
-var imagePath, _ = filepath.Abs("neko.png")
+var imagePath, _ = filepath.Abs("./img/neko.png")
 
 func Pop(appName string, title string, text string, endless bool) {
 	fmt.Println(title+emoji.Sprint(":cat2:"), text)

@@ -111,18 +111,9 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().BoolVar(&endless, "e", false, "endless")
-	rootCmd.PersistentFlags().BoolVar(&hour, "h", false, "hour")
-	rootCmd.PersistentFlags().BoolVar(&minute, "m", false, "minute")
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.a
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	// rootCmd.PersistentFlags().BoolVar(&reverse, "r", false, "Reverse resolution")
+	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
+	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 }
 
 // initConfig reads in config file and ENV variables if set.

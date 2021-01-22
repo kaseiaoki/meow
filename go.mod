@@ -14,5 +14,5 @@ require (
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.4.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
-	gopkg.in/toast.v1 v1.0.0-20180812000517-0a84660828b2
+	gopkg.in/toast.v1 v1.0.0-20180812000517-0a84660828b2 // indirect
 )

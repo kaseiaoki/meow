@@ -32,7 +32,6 @@ import (
 
 var cfgFile string
 var (
-	endless bool
 	minute  bool
 	hour    bool
 )
@@ -48,10 +47,10 @@ func newRootCmd() *cobra.Command {
 		Args: func(cmd *cobra.Command, args []string) error {
 			switch len(args) {
 			case 0:
-				notice.Pop("meow-hype", "meow-hype", "meow!!", endless)
+				notice.Pop("meow-hype", "meow-hype", "meow!!")
 				return nil
 			case 1:
-				notice.Pop("meow-hype", "meow-hype", args[0], endless)
+				notice.Pop("meow-hype", "meow-hype", args[0])
 				return nil
 			case 2:
 				e := validation.Validate(args[1],
@@ -88,7 +87,7 @@ func newRootCmd() *cobra.Command {
 			}
 
 			<-timer.C
-			notice.Pop("meow-hype", "meow-hype", textArg, endless)
+			notice.Pop("meow-hype", "meow-hype", textArg)
 
 			return nil
 
@@ -107,7 +106,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().BoolVar(&endless, "e", false, "endless")
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 }

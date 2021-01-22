@@ -33,7 +33,7 @@ import (
 var cfgFile string
 var (
 	endless bool
-	minute bool
+	minute  bool
 	hour    bool
 )
 
@@ -70,7 +70,7 @@ func newRootCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 2 {
 				return nil
-			} 
+			}
 			// send toDO
 			textArg := args[0]
 			// wrap to time duration
@@ -83,7 +83,7 @@ func newRootCmd() *cobra.Command {
 			timer := time.NewTimer(td * time.Second)
 			if minute {
 				timer = time.NewTimer(td * time.Minute)
-			} else if hour  {
+			} else if hour {
 				timer = time.NewTimer(td * time.Hour)
 			}
 

@@ -46,12 +46,14 @@ func newRootCmd() *cobra.Command {
 		Short: "meow! this is notifer!",
 		Long:  `meow! flag1 -> time(default second). flag2 -> note.`,
 		Args: func(cmd *cobra.Command, args []string) error {
-			if 2 < len(args) {
-				return errors.New("Default arguments are time and text only.")
-			}
-		
-			if 1 < len(args) {
-
+			switch len(args) {
+			case 0:
+				notice.Pop("meow-hype", "meow-hype", "meow!!", endless)
+				return nil
+			case 1:
+				notice.Pop("meow-hype", "meow-hype", args[0], endless)
+				return nil
+			case 2:
 				e := validation.Validate(args[1],
 					validation.Required,     // 空を許容しない
 					validation.Length(1, 5), // 長さが5から100まで
@@ -60,21 +62,15 @@ func newRootCmd() *cobra.Command {
 					fmt.Println(e)
 					return errors.New("Default arguments are time and text only.")
 				}
-
+			default:
+				return errors.New("Default arguments are time and text only.")
 			}
 			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// test run
-			if len(args) == 0 {
-				notice.Pop("meow-hype", "meow-hype", "meow!!", endless)
+			if len(args) < 2 {
 				return nil
-			}
-			// message test run
-			if len(args) == 1 {
-				notice.Pop("meow-hype", "meow-hype", args[0], endless)
-				return nil
-			}
+			} 
 			// send toDO
 			textArg := args[0]
 			// wrap to time duration

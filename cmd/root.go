@@ -91,8 +91,6 @@ func newRootCmd() *cobra.Command {
 				timer = time.NewTimer(td * time.Hour)
 			}
 
-			
-
 			<-timer.C
 			notice.Pop("meow-hype", "meow-hype", textArg, endless)
 
@@ -118,7 +116,6 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.redirect-test.yaml)")
 	rootCmd.PersistentFlags().BoolVar(&endless, "e", false, "endless")
 	rootCmd.PersistentFlags().BoolVar(&hour, "h", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "m", false, "minute")

@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/cobra"
 
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/kaseiaoki/meow-hype/notice"
+	"github.com/kaseiaoki/meow/notice"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
@@ -47,10 +47,10 @@ func newRootCmd() *cobra.Command {
 		Args: func(cmd *cobra.Command, args []string) error {
 			switch len(args) {
 			case 0:
-				notice.Pop("meow-hype", "meow-hype", "meow!!")
+				notice.Pop("meow", "meow", "meow!!")
 				return nil
 			case 1:
-				notice.Pop("meow-hype", "meow-hype", args[0])
+				notice.Pop("meow", "meow", args[0])
 				return nil
 			case 2:
 				e := validation.Validate(args[1],
@@ -87,7 +87,7 @@ func newRootCmd() *cobra.Command {
 			}
 
 			<-timer.C
-			notice.Pop("meow-hype", "meow-hype", textArg)
+			notice.Pop("meow", "meow", textArg)
 
 			return nil
 

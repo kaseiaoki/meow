@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/kaseiaoki/meow-hype/cmd"
+import "github.com/kaseiaoki/meow/cmd"
 
 func main() {
 	cmd.Execute()

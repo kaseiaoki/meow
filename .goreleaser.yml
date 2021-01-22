@@ -1,4 +1,4 @@
-project_name: meow-hype
+project_name: meow
 env:
   - GO111MODULE=on
 before:

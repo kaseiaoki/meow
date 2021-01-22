@@ -1,4 +1,4 @@
-module github.com/kaseiaoki/meow-hype
+module github.com/kaseiaoki/meow
 
 go 1.15
 

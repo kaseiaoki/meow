@@ -26,7 +26,11 @@ func Pop(appName string, title string, text string, endless bool) {
 		err := notification.Push()
 		if err != nil {
 			log.Fatalln(err)
+			return
 		}
+		return
 	}
+
 	notify.Notify(appName, title, text, imagePath)
+	return
 }

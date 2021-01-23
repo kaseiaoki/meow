@@ -32,8 +32,8 @@ import (
 
 var cfgFile string
 var (
-	minute  bool
-	hour    bool
+	minute bool
+	hour   bool
 )
 
 // rootCmd represents the base command when called without any subcommands

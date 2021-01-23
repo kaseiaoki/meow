@@ -16,12 +16,14 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/kaseiaoki/meow/notice"
-	"github.com/kaseiaoki/meow/executeCmd"
-	"github.com/spf13/cobra"
 	"errors"
 	"fmt"
+	"github.com/kaseiaoki/meow/executeCmd"
+	"github.com/kaseiaoki/meow/notice"
+	"github.com/spf13/cobra"
 )
+
+var stdin string
 
 // execCmd represents the exec command
 var execCmd = &cobra.Command{
@@ -31,24 +33,29 @@ var execCmd = &cobra.Command{
 
 mw exec <comand> <note>`,
 	Args: func(cmd *cobra.Command, args []string) error {
+		var out string
+		var err error
 		switch len(args) {
 		case 0:
 			return errors.New("mw ecec <command> <note>")
 			return nil
 		case 1:
 			//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
-			out, err := executeCmd.Out(args[0])
+			if stdin != "" {
+
+			}
+			out, err = executeCmd.Out(args[0])
 			if err != nil {
-				fmt.Println(err);
+				fmt.Println(err)
 				return errors.New("comand turned error")
 			}
 			fmt.Println(string(out))
 			notice.Pop("meow", "meow", "meow!")
 			return nil
 		case 2:
-			out, err := executeCmd.Out(args[0])
+			out, err = executeCmd.Out(args[0])
 			if err != nil {
-				fmt.Println(err);
+				fmt.Println(err)
 				return errors.New("comand turned error")
 			}
 			fmt.Println(string(out))
@@ -59,10 +66,11 @@ mw exec <comand> <note>`,
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-			return nil
+		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(execCmd)
+	rootCmd.PersistentFlags().StringVar(&stdin, "stdin", "", "stdin value")
 }

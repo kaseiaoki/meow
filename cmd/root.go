@@ -22,11 +22,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/spf13/cobra"
-
-	validation "github.com/go-ozzo/ozzo-validation"
+	"github.com/kaseiaoki/meow/executeCmd"
 	"github.com/kaseiaoki/meow/notice"
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
@@ -34,6 +33,9 @@ var cfgFile string
 var (
 	minute bool
 	hour   bool
+	note   string
+	second string
+	stdin  string
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -45,52 +47,53 @@ func newRootCmd() *cobra.Command {
 		Short: "meow! this is notifer!",
 		Long:  `meow! flag1 -> time(default second). flag2 -> note.`,
 		Args: func(cmd *cobra.Command, args []string) error {
+			var out string
+			var err error
 			switch len(args) {
 			case 0:
-				notice.Pop("meow", "meow", "meow!!")
-				return nil
-			case 1:
-				notice.Pop("meow", "meow", args[0])
-				return nil
-			case 2:
-				e := validation.Validate(args[1],
-					validation.Required,     // 空を許容しない
-					validation.Length(1, 5), // 長さが5から100まで
-				)
+				if 1 < len(args) {
+					return nil
+				}
+				// send toDO
+
+				// wrap to time duration
+				timeArg, e := strconv.Atoi(second)
 				if e != nil {
 					fmt.Println(e)
-					return errors.New("mw <time> <note>")
 				}
+
+				td := time.Duration(timeArg)
+				timer := time.NewTimer(td * time.Second)
+				if minute {
+					timer = time.NewTimer(td * time.Minute)
+				} else if hour {
+					timer = time.NewTimer(td * time.Hour)
+				}
+
+				<-timer.C
+				notice.Pop("meow", "meow", note)
+				return nil
+			case 1:
+				//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
+				if stdin != "" {
+					out, err = executeCmd.Out(args[0])
+				} else {
+					out, err = executeCmd.StdIO(args[0], stdin)
+				}
+
+				if err != nil {
+					fmt.Println(err)
+					return errors.New("comand turned error")
+				}
+				fmt.Println(string(out))
+				notice.Pop("meow", "meow", note)
+				return nil
 			default:
-				return errors.New("mw <time> <note>")
+				return errors.New("Default arguments are time and text only.")
 			}
-			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) < 2 {
-				return nil
-			}
-			// send toDO
-			textArg := args[0]
-			// wrap to time duration
-			timeArg, e := strconv.Atoi(args[1])
-			if e != nil {
-				fmt.Println(e)
-			}
-
-			td := time.Duration(timeArg)
-			timer := time.NewTimer(td * time.Second)
-			if minute {
-				timer = time.NewTimer(td * time.Minute)
-			} else if hour {
-				timer = time.NewTimer(td * time.Hour)
-			}
-
-			<-timer.C
-			notice.Pop("meow", "meow", textArg)
-
 			return nil
-
 		},
 	}
 }
@@ -108,6 +111,9 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
+	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
+	rootCmd.PersistentFlags().StringVar(&second, "second", "1", "second")
+	rootCmd.PersistentFlags().StringVar(&stdin, "stdin", "", "stdin value")
 }
 
 // initConfig reads in config file and ENV variables if set.

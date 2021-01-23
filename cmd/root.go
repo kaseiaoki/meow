@@ -59,10 +59,10 @@ func newRootCmd() *cobra.Command {
 				)
 				if e != nil {
 					fmt.Println(e)
-					return errors.New("Default arguments are time and text only.")
+					return errors.New("mw <time> <note>")
 				}
 			default:
-				return errors.New("Default arguments are time and text only.")
+				return errors.New("mw <time> <note>")
 			}
 			return nil
 		},

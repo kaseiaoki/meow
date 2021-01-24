@@ -35,7 +35,6 @@ var (
 	hour   bool
 	note   string
 	second string
-	stdin  string
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -44,8 +43,9 @@ var rootCmd = newRootCmd()
 func newRootCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "mh",
-		Short: "meow! this is notifer!",
-		Long:  `meow! flag1 -> time(default second). flag2 -> note.`,
+		Short: "meow! this is notifer",
+		Long:  `meow!
+		 mh <any command> <time(sec)>`,
 		Args: func(cmd *cobra.Command, args []string) error {
 			var out string
 			var err error
@@ -75,16 +75,32 @@ func newRootCmd() *cobra.Command {
 				return nil
 			case 1:
 				//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
-				if stdin != "" {
-					out, err = executeCmd.Out(args[0])
-				} else {
-					out, err = executeCmd.StdIO(args[0], stdin)
+				timeArg, e := strconv.Atoi(second)
+				if e != nil {
+					fmt.Println(e)
 				}
+				td := time.Duration(timeArg)
+				ticker := time.NewTicker(td * time.Second)
 
+				if minute {
+					ticker = time.NewTicker(td * time.Minute)
+				} else if hour {
+					ticker = time.NewTicker(td * time.Hour)
+				}
+				
+				go func() {
+					for range ticker.C {
+						notice.Pop("meow", "meow", "now running!")
+					}
+				}()
+		
+				out, err = executeCmd.Out(args[0])
+	
 				if err != nil {
 					fmt.Println(err)
 					return errors.New("comand turned error")
 				}
+
 				fmt.Println(string(out))
 				notice.Pop("meow", "meow", note)
 				return nil
@@ -112,8 +128,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
-	rootCmd.PersistentFlags().StringVar(&second, "second", "1", "second")
-	rootCmd.PersistentFlags().StringVar(&stdin, "stdin", "", "stdin value")
+	rootCmd.PersistentFlags().StringVar(&second, "time", "1", "time(second)")
 }
 
 // initConfig reads in config file and ENV variables if set.

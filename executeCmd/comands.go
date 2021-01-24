@@ -5,6 +5,7 @@ import (
 	"io"
 	"os/exec"
 	"runtime"
+	// "os"
 )
 
 func Out(arg string) (string, error) {
@@ -17,11 +18,8 @@ func Out(arg string) (string, error) {
 		cmd = exec.Command("bash", "-c", "<your command>")
 	}
 	out, err = cmd.Output()
-	if err != nil {
-		fmt.Println(err)
-		return "", err
-	}
-	return string(out), nil
+
+	return string(out), err
 }
 
 func StdIO(arg string, input string) (string, error) {

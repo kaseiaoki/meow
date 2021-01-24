@@ -44,7 +44,7 @@ func newRootCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "mh",
 		Short: "meow! this is notifer",
-		Long:  `meow!
+		Long: `meow!
 		 mh <any command> <time(sec)>`,
 		Args: func(cmd *cobra.Command, args []string) error {
 			var out string
@@ -87,15 +87,15 @@ func newRootCmd() *cobra.Command {
 				} else if hour {
 					ticker = time.NewTicker(td * time.Hour)
 				}
-				
+
 				go func() {
 					for range ticker.C {
 						notice.Pop("meow", "meow", "now running!")
 					}
 				}()
-		
+
 				out, err = executeCmd.Out(args[0])
-	
+
 				if err != nil {
 					fmt.Println(err)
 					return errors.New("comand turned error")

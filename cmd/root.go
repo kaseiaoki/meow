@@ -42,7 +42,7 @@ var rootCmd = newRootCmd()
 
 func newRootCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "mh",
+		Use:   "mw",
 		Short: "meow! this is notifer",
 		Long: `meow!
 		 mh <any command> <time(sec)>`,
@@ -71,7 +71,7 @@ func newRootCmd() *cobra.Command {
 				}
 
 				<-timer.C
-				notice.Pop("meow", "meow", note)
+				notice.Pop("meow", "meow!!", note)
 				return nil
 			case 1:
 				//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
@@ -128,7 +128,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
-	rootCmd.PersistentFlags().StringVar(&second, "time", "1", "time(second)")
+	rootCmd.PersistentFlags().StringVar(&second, "time", "10", "time(second)")
 }
 
 // initConfig reads in config file and ENV variables if set.

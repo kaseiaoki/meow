@@ -15,7 +15,7 @@ func Out(arg string) (string, error) {
 	if runtime.GOOS == "windows" {
 		cmd = exec.Command("cmd", "/C", arg)
 	} else {
-		cmd = exec.Command("bash", "-c", "<your command>")
+		cmd = exec.Command("bash", "-c", arg)
 	}
 	out, err = cmd.Output()
 
@@ -29,7 +29,7 @@ func StdIO(arg string, input string) (string, error) {
 	if runtime.GOOS == "windows" {
 		cmd = exec.Command("cmd", "/C", arg)
 	} else {
-		cmd = exec.Command("bash", "-c", "<your command>")
+		cmd = exec.Command("bash", "-c", arg)
 	}
 
 	stdin, _ := cmd.StdinPipe()

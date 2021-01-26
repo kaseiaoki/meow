@@ -135,7 +135,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
-	rootCmd.PersistentFlags().StringVar(&second, "time", "10", "time(second)")
+	rootCmd.PersistentFlags().StringVar(&second, "after", "10", "after(second)")
 	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0", "snooze")
 }
 

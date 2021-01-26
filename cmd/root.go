@@ -30,7 +30,7 @@ var cfgFile string
 var (
 	minute bool
 	hour   bool
-	snooze bool
+	snooze string
 	note   string
 	second string
 )
@@ -52,25 +52,13 @@ func newRootCmd() *cobra.Command {
 				if 1 < len(args) {
 					return nil
 				}
-				// send toDO
 
-				// wrap to time duration
 				timeArg, e := strconv.Atoi(second)
 				if e != nil {
 					fmt.Println(e)
 				}
 
 				td := time.Duration(timeArg)
-				// snooze 
-				if snooze {
-					go func() {
-						ticker := time.NewTicker(td * time.Second)
-						for range ticker.C {
-							notice.Pop("meow", "meow", note)
-						}
-					}()
-					return nil
-				}
 
 				timer := time.NewTimer(td * time.Second)
 				if minute {
@@ -80,10 +68,20 @@ func newRootCmd() *cobra.Command {
 				}
 
 				<-timer.C
+				if snooze != "0" {
+					timeArgS, es := strconv.Atoi(snooze)
+					if es != nil {
+						fmt.Println(es)
+					}
+					tds := time.Duration(timeArgS)
+					tickers := time.NewTicker(tds * time.Second)
+					for range tickers.C {
+						notice.Pop("meow", "meow", note)
+					}
+				}
 				notice.Pop("meow", "meow!!", note)
 				return nil
 			case 1:
-				//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
 				timeArg, e := strconv.Atoi(second)
 				if e != nil {
 					fmt.Println(e)
@@ -138,7 +136,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
 	rootCmd.PersistentFlags().StringVar(&second, "time", "10", "time(second)")
-	rootCmd.PersistentFlags().BoolVar(&snooze, "snooze", false, "snooze")
+	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0", "snooze")
 }
 
 // initConfig reads in config file and ENV variables if set.

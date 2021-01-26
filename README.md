@@ -9,10 +9,10 @@ Simple desktop notification.
 `mw <any command> --note <Note to be displayed in the notificatio> --after <Interval between notifications of running(sec)>`
   
 Desktop notification after command execution is complete.
-### options
-####--minute bool
+## options
+### --minute bool
 Set interval in minutes
-####--hour bool
+### --hour bool
 Set interval in hour
-###--snooze string
+### --snooze string
 Set snooze(WIP)

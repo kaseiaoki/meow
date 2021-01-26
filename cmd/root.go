@@ -154,7 +154,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".redirect-test" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".redirect-test")
+		viper.SetConfigName(".meow")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

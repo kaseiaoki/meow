@@ -1,12 +1,9 @@
 /*
 Copyright © 2021 NAME HERE <EMAIL ADDRESS>
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +30,7 @@ var cfgFile string
 var (
 	minute bool
 	hour   bool
+	snooze bool
 	note   string
 	second string
 )
@@ -63,6 +61,17 @@ func newRootCmd() *cobra.Command {
 				}
 
 				td := time.Duration(timeArg)
+				// snooze 
+				if snooze {
+					go func() {
+						ticker := time.NewTicker(td * time.Second)
+						for range ticker.C {
+							notice.Pop("meow", "meow", note)
+						}
+					}()
+					return nil
+				}
+
 				timer := time.NewTimer(td * time.Second)
 				if minute {
 					timer = time.NewTimer(td * time.Minute)
@@ -129,6 +138,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
 	rootCmd.PersistentFlags().StringVar(&second, "time", "10", "time(second)")
+	rootCmd.PersistentFlags().BoolVar(&snooze, "snooze", false, "snooze")
 }
 
 // initConfig reads in config file and ENV variables if set.

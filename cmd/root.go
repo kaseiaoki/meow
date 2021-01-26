@@ -1,12 +1,9 @@
 /*
 Copyright © 2021 NAME HERE <EMAIL ADDRESS>
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,6 +30,7 @@ var cfgFile string
 var (
 	minute bool
 	hour   bool
+	snooze string
 	note   string
 	second string
 )
@@ -71,15 +69,14 @@ func newRootCmd() *cobra.Command {
 				if 1 < len(args) {
 					return nil
 				}
-				// send toDO
 
-				// wrap to time duration
 				timeArg, e := strconv.Atoi(second)
 				if e != nil {
 					fmt.Println(e)
 				}
 
 				td := time.Duration(timeArg)
+
 				timer := time.NewTimer(td * time.Second)
 				if minute {
 					timer = time.NewTimer(td * time.Minute)
@@ -88,10 +85,20 @@ func newRootCmd() *cobra.Command {
 				}
 
 				<-timer.C
+				if snooze != "0" {
+					timeArgS, es := strconv.Atoi(snooze)
+					if es != nil {
+						fmt.Println(es)
+					}
+					tds := time.Duration(timeArgS)
+					tickers := time.NewTicker(tds * time.Second)
+					for range tickers.C {
+						notice.Pop("meow", "meow", note)
+					}
+				}
 				notice.Pop("meow", "meow!!", note)
 				return nil
 			case 1:
-				//c := exec.Command("cmd", "/C", "del", "D:\\a.txt")
 				timeArg, e := strconv.Atoi(second)
 				if e != nil {
 					fmt.Println(e)
@@ -145,7 +152,8 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
-	rootCmd.PersistentFlags().StringVar(&second, "time", "10", "time(second)")
+	rootCmd.PersistentFlags().StringVar(&second, "after", "10", "after(second)")
+	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0", "snooze")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -163,7 +171,7 @@ func initConfig() {
 
 		// Search config in home directory with name ".redirect-test" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".redirect-test")
+		viper.SetConfigName(".meow")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

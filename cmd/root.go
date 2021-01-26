@@ -86,15 +86,8 @@ func newRootCmd() *cobra.Command {
 
 				<-timer.C
 				if snooze != "0" {
-					timeArgS, es := strconv.Atoi(snooze)
-					if es != nil {
-						fmt.Println(es)
-					}
-					tds := time.Duration(timeArgS)
-					tickers := time.NewTicker(tds * time.Second)
-					for range tickers.C {
-						notice.Pop("meow", "meow", note)
-					}
+					notice.Snooze("meow", "meow!!", note, snooze)
+					return nil
 				}
 				notice.Pop("meow", "meow!!", note)
 				return nil
@@ -126,6 +119,10 @@ func newRootCmd() *cobra.Command {
 				}
 
 				fmt.Println(string(out))
+				if snooze != "0" {
+					notice.Snooze("meow", "meow!!", note, snooze)
+					return nil
+				}
 				notice.Pop("meow", "meow", note)
 				return nil
 			default:

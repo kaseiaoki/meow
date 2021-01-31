@@ -52,9 +52,7 @@ var execCmd = &cobra.Command{
 		}
 
 		td := time.Duration(t)
-
 		ticker := time.NewTicker(td)
-
 		go func() {
 			for range ticker.C {
 				notice.Pop("now running!")
@@ -62,7 +60,6 @@ var execCmd = &cobra.Command{
 		}()
 
 		out, err = executeCmd.Out(args[0])
-
 		if err != nil {
 			fmt.Println(err)
 			return errors.New("comand turned error")

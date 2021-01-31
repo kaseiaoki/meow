@@ -5,7 +5,6 @@ import (
 	"github.com/kaseiaoki/meow/config"
 	"github.com/martinlindhe/notify"
 	"path/filepath"
-	"strconv"
 	"time"
 )
 
@@ -24,13 +23,13 @@ func Pop(text string) {
 }
 
 func Snooze(text string, interval string) {
-	timeArgS, es := strconv.Atoi(interval)
-	if es != nil {
-		fmt.Println(es)
+	t, err := time.ParseDuration(interval)
+	if err != nil {
+		fmt.Println(err)
 	}
-	tds := time.Duration(timeArgS)
-	tickers := time.NewTicker(tds * time.Second)
-	for range tickers.C {
+	td := time.Duration(t)
+	ticker := time.NewTicker(td)
+	for range ticker.C {
 		Pop(text)
 	}
 

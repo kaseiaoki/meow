@@ -39,9 +39,7 @@ var remindCmd = &cobra.Command{
 		if err != nil {
 			fmt.Println(err)
 		}
-
 		td := time.Duration(t)
-
 		timer := time.NewTimer(td)
 
 		<-timer.C
@@ -49,6 +47,7 @@ var remindCmd = &cobra.Command{
 			notice.Snooze(note, snooze)
 			return nil
 		}
+
 		notice.Pop(note)
 		return nil
 	},

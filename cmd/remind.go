@@ -17,9 +17,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/kaseiaoki/meow/notice"
 	"strconv"
 	"time"
-	"github.com/kaseiaoki/meow/notice"
 
 	"github.com/spf13/cobra"
 )
@@ -74,7 +74,6 @@ var remindCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(remindCmd)
-
 
 	// Here you will define your flags and configuration settings.
 

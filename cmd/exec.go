@@ -58,7 +58,7 @@ var execCmd = &cobra.Command{
 
 		go func() {
 			for range ticker.C {
-				notice.Pop("meow", "meow", "now running!")
+				notice.Pop(config.AppName, config.Title, note, config.Icon)
 			}
 		}()
 
@@ -71,11 +71,11 @@ var execCmd = &cobra.Command{
 
 		fmt.Println(string(out))
 		if snooze != "0" {
-			notice.Snooze("meow", "meow!!", note, snooze)
+			notice.Snooze(config.AppName, config.Title, note, snooze, config.Icon)
 			return nil
 		}
 
-		notice.Pop("meow", "meow", note)
+		notice.Pop(config.AppName, config.Title, note, config.Icon)
 		os.Exit(1)
 
 		return nil

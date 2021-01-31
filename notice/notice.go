@@ -3,25 +3,26 @@ package notice
 import (
 	"fmt"
 	"github.com/martinlindhe/notify"
+	"path/filepath"
+	"strconv"
 	"time"
 )
 
-func Pop(appName string, title string, text string) {
-	notify.Notify(appName, title, text, "")
+func Pop(appName string, title string, text string, icon string) {
+	path, _ := filepath.Abs(icon)
+	notify.Notify(appName, title, text, path)
 	return
 }
 
-func Snooze(appName string, title string, text string, interval string) {
-	t, err := time.ParseDuration(interval)
-	if err != nil {
-		fmt.Println(err)
+func Snooze(appName string, title string, text string, interval string, icon string) {
+	timeArgS, es := strconv.Atoi(interval)
+	if es != nil {
+		fmt.Println(es)
 	}
-
-	td := time.Duration(t)
-
-	tickers := time.NewTicker(td)
+	tds := time.Duration(timeArgS)
+	tickers := time.NewTicker(tds * time.Second)
 	for range tickers.C {
-		Pop("meow", "meow", text)
+		Pop("meow", "meow", text, icon)
 	}
 
 	return

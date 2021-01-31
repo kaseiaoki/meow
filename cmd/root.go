@@ -14,13 +14,22 @@ package cmd
 
 import (
 	"fmt"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
 )
 
+// 読み込む設定の型
+type Config struct {
+	AppName string
+	Title   string
+	Icon    string
+}
+
+var config Config
+
 var cfgFile string
+
 var (
 	snooze   string
 	note     string
@@ -55,12 +64,13 @@ func newRootCmd() *cobra.Command {
 		Set snooze(WIP)
 		`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			fmt.Printf("configFile: %s\nconfig: %#v", cfgFile, config)
 			return nil
 		},
 	}
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
+// Execute adds all child commands to the root command and segots flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -75,30 +85,33 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&after, "after", "1s", "after(second)")
 	rootCmd.PersistentFlags().StringVar(&interval, "interval", "1s", "interval(second)")
 	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0s", "snooze")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.meow.toml)")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
-		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
+		conf, err := os.UserConfigDir()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			fmt.Fprintln(os.Stderr, err)
 		}
 
-		// Search config in home directory with name ".redirect-test" (without extension).
-		viper.AddConfigPath(home)
+		viper.AddConfigPath(conf)
 		viper.SetConfigName(".meow")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	// 設定ファイルを読み込む
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
+
+	// 設定ファイルの内容を構造体にコピーする
+	if err := viper.Unmarshal(&config); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	fmt.Println(config)
 }

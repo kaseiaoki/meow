@@ -56,7 +56,7 @@ var execCmd = &cobra.Command{
 
 		go func() {
 			for range ticker.C {
-				notice.Pop(config.AppName, config.Title, note, config.Icon)
+				notice.Pop(config.AppName, config.Title, "now running!", config.Icon)
 			}
 		}()
 

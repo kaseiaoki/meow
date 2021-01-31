@@ -79,7 +79,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
 	rootCmd.PersistentFlags().StringVar(&after, "after", "1s", "after(second)")
-	rootCmd.PersistentFlags().StringVar(&interval, "interval", "1s", "interval(second)")
+	rootCmd.PersistentFlags().StringVar(&interval, "interval", "10s", "interval(second)")
 	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0s", "snooze")
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.meow.toml)")
 }
@@ -106,5 +106,4 @@ func initConfig() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Println(config)
 }

@@ -1,8 +1,8 @@
 package notice
 
 import (
-	"github.com/martinlindhe/notify"
 	"fmt"
+	"github.com/martinlindhe/notify"
 	"strconv"
 	"time"
 )

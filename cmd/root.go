@@ -13,14 +13,8 @@ limitations under the License.
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"strconv"
-	"time"
-
-	"github.com/kaseiaoki/meow/executeCmd"
-	"github.com/kaseiaoki/meow/notice"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -61,74 +55,6 @@ func newRootCmd() *cobra.Command {
 		### --snooze string
 		Set snooze(WIP)
 		`,
-		Args: func(cmd *cobra.Command, args []string) error {
-			var out string
-			var err error
-			switch len(args) {
-			case 0:
-				if 1 < len(args) {
-					return nil
-				}
-
-				timeArg, e := strconv.Atoi(second)
-				if e != nil {
-					fmt.Println(e)
-				}
-
-				td := time.Duration(timeArg)
-
-				timer := time.NewTimer(td * time.Second)
-				if minute {
-					timer = time.NewTimer(td * time.Minute)
-				} else if hour {
-					timer = time.NewTimer(td * time.Hour)
-				}
-
-				<-timer.C
-				if snooze != "0" {
-					notice.Snooze("meow", "meow!!", note, snooze)
-					return nil
-				}
-				notice.Pop("meow", "meow!!", note)
-				return nil
-			case 1:
-				timeArg, e := strconv.Atoi(second)
-				if e != nil {
-					fmt.Println(e)
-				}
-				td := time.Duration(timeArg)
-				ticker := time.NewTicker(td * time.Second)
-
-				if minute {
-					ticker = time.NewTicker(td * time.Minute)
-				} else if hour {
-					ticker = time.NewTicker(td * time.Hour)
-				}
-
-				go func() {
-					for range ticker.C {
-						notice.Pop("meow", "meow", "now running!")
-					}
-				}()
-
-				out, err = executeCmd.Out(args[0])
-
-				if err != nil {
-					fmt.Println(err)
-					return errors.New("comand turned error")
-				}
-
-				fmt.Println(string(out))
-				if snooze != "0" {
-					notice.Snooze("meow", "meow!!", note, snooze)
-					return nil
-				}
-				notice.Pop("meow", "meow", note)
-				return nil
-			default:
-				return errors.New("Default arguments are time and text only.")
-			}
-		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return nil
 		},

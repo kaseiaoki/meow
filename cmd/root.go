@@ -22,11 +22,12 @@ import (
 
 var cfgFile string
 var (
-	minute bool
-	hour   bool
-	snooze string
-	note   string
-	second string
+	minute   bool
+	hour     bool
+	snooze   string
+	note     string
+	second   string
+	interval string
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -75,7 +76,8 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&hour, "hour", false, "hour")
 	rootCmd.PersistentFlags().BoolVar(&minute, "minute", false, "minute")
 	rootCmd.PersistentFlags().StringVar(&note, "note", "meow!", "note")
-	rootCmd.PersistentFlags().StringVar(&second, "after", "10", "after(second)")
+	rootCmd.PersistentFlags().StringVar(&second, "after", "1", "after(second)")
+	rootCmd.PersistentFlags().StringVar(&interval, "interval", "1", "interval(second)")
 	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0", "snooze")
 }
 

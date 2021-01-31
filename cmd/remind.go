@@ -28,8 +28,7 @@ import (
 var remindCmd = &cobra.Command{
 	Use:   "remind",
 	Short: "meow! this is notifer",
-	Long: `# meow
-	meow is desktop toast notice tool.
+	Long: `# meow meow is desktop toast notice tool.
 	# usage
 	### 1 default 
 	"mw --note <Note to be displayed in the notification> --after <Interval between notifications (sec)> "

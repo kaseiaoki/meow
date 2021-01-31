@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strconv"
 	"time"
-
+	"os"
 	"github.com/kaseiaoki/meow/executeCmd"
 	"github.com/kaseiaoki/meow/notice"
 
@@ -57,7 +57,7 @@ var execCmd = &cobra.Command{
 			return nil
 		}
 
-		timeArg, e := strconv.Atoi(second)
+		timeArg, e := strconv.Atoi(interval)
 		if e != nil {
 			fmt.Println(e)
 		}
@@ -89,6 +89,7 @@ var execCmd = &cobra.Command{
 			return nil
 		}
 		notice.Pop("meow", "meow", note)
+		os.Exit(1)
 		return nil
 	},
 }

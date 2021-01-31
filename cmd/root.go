@@ -64,7 +64,6 @@ func newRootCmd() *cobra.Command {
 		Set snooze(WIP)
 		`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Printf("configFile: %s\nconfig: %#v", cfgFile, config)
 			return nil
 		},
 	}

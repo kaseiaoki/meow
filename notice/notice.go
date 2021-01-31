@@ -10,6 +10,12 @@ import (
 
 func Pop(appName string, title string, text string, icon string) {
 	path, _ := filepath.Abs(icon)
+	if appName == "" {
+		appName = "meow"
+	}
+	if title == "" {
+		appName = "meow!"
+	}
 	notify.Notify(appName, title, text, path)
 	return
 }

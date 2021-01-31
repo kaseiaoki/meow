@@ -1,4 +1,4 @@
 # File: $HOME/.meow.toml
 appName: "meow"
 title: "meow!"
-icon: "C:/Users/s1321/go/src/github.com/kaseiaoki/meow/img/neko.png"
+icon: "path/to/icon"

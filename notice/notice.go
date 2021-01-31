@@ -3,7 +3,6 @@ package notice
 import (
 	"fmt"
 	"github.com/martinlindhe/notify"
-	"strconv"
 	"time"
 )
 
@@ -13,12 +12,14 @@ func Pop(appName string, title string, text string) {
 }
 
 func Snooze(appName string, title string, text string, interval string) {
-	timeArgS, es := strconv.Atoi(interval)
-	if es != nil {
-		fmt.Println(es)
+	t, err := time.ParseDuration(interval)
+	if err != nil {
+		fmt.Println(err)
 	}
-	tds := time.Duration(timeArgS)
-	tickers := time.NewTicker(tds * time.Second)
+
+	td := time.Duration(t)
+
+	tickers := time.NewTicker(td)
 	for range tickers.C {
 		Pop("meow", "meow", text)
 	}

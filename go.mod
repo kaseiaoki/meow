@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/deckarep/gosx-notifier v0.0.0-20180201035817-e127226297fb // indirect
+	github.com/hako/durafmt v0.0.0-20200710122514-c0fb7b4da026
 	github.com/martinlindhe/notify v0.0.0-20181008203735-20632c9a275a
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect

@@ -18,10 +18,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/kaseiaoki/meow/notice"
-	"strconv"
-	"time"
-
 	"github.com/spf13/cobra"
+	"time"
 )
 
 // remindCmd represents the remind command
@@ -47,22 +45,17 @@ var remindCmd = &cobra.Command{
 	Set snooze(WIP)
 	`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		timeArg, e := strconv.Atoi(second)
-		if e != nil {
-			fmt.Println(e)
+		t, err := time.ParseDuration(after)
+		if err != nil {
+			fmt.Println(err)
 		}
 
-		td := time.Duration(timeArg)
+		td := time.Duration(t)
 
-		timer := time.NewTimer(td * time.Second)
-		if minute {
-			timer = time.NewTimer(td * time.Minute)
-		} else if hour {
-			timer = time.NewTimer(td * time.Hour)
-		}
+		timer := time.NewTimer(td)
 
 		<-timer.C
-		if snooze != "0" {
+		if snooze != "0s" {
 			notice.Snooze("meow", "meow!!", note, snooze)
 			return nil
 		}

@@ -18,13 +18,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"strconv"
-	"time"
-	"os"
 	"github.com/kaseiaoki/meow/executeCmd"
 	"github.com/kaseiaoki/meow/notice"
-
 	"github.com/spf13/cobra"
+	"os"
+	"time"
 )
 
 // execCmd represents the exec command
@@ -57,18 +55,14 @@ var execCmd = &cobra.Command{
 			return nil
 		}
 
-		timeArg, e := strconv.Atoi(interval)
-		if e != nil {
-			fmt.Println(e)
+		t, err := time.ParseDuration(interval)
+		if err != nil {
+			fmt.Println(err)
 		}
-		td := time.Duration(timeArg)
-		ticker := time.NewTicker(td * time.Second)
 
-		if minute {
-			ticker = time.NewTicker(td * time.Minute)
-		} else if hour {
-			ticker = time.NewTicker(td * time.Hour)
-		}
+		td := time.Duration(t)
+
+		ticker := time.NewTicker(td)
 
 		go func() {
 			for range ticker.C {
@@ -88,8 +82,10 @@ var execCmd = &cobra.Command{
 			notice.Snooze("meow", "meow!!", note, snooze)
 			return nil
 		}
+
 		notice.Pop("meow", "meow", note)
 		os.Exit(1)
+
 		return nil
 	},
 }

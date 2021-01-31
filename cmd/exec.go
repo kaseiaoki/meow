@@ -68,7 +68,7 @@ var execCmd = &cobra.Command{
 		}
 
 		fmt.Println(string(out))
-		if snooze != "0" {
+		if snooze != "0s" {
 			notice.Snooze(config.AppName, config.Title, note, snooze, config.Icon)
 			return nil
 		}

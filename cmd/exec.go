@@ -24,6 +24,7 @@ import (
 	"os"
 	"time"
 )
+
 var execCmd = &cobra.Command{
 	Use:   "exec",
 	Short: "meow! this is notifer",
@@ -56,7 +57,7 @@ var execCmd = &cobra.Command{
 
 		go func() {
 			for range ticker.C {
-				notice.Pop(config.AppName, config.Title, "now running!", config.Icon)
+				notice.Pop("now running!")
 			}
 		}()
 
@@ -69,11 +70,11 @@ var execCmd = &cobra.Command{
 
 		fmt.Println(string(out))
 		if snooze != "0s" {
-			notice.Snooze(config.AppName, config.Title, note, snooze, config.Icon)
+			notice.Snooze(note, snooze)
 			return nil
 		}
 
-		notice.Pop(config.AppName, config.Title, note, config.Icon)
+		notice.Pop(note)
 		os.Exit(1)
 
 		return nil

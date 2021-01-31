@@ -14,20 +14,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/kaseiaoki/meow/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
 )
-
-type Config struct {
-	AppName string
-	Title   string
-	Icon    string
-}
-
-var config Config
-
-var cfgFile string
 
 var (
 	snooze   string
@@ -81,12 +72,12 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&after, "after", "1s", "after(second)")
 	rootCmd.PersistentFlags().StringVar(&interval, "interval", "10s", "interval(second)")
 	rootCmd.PersistentFlags().StringVar(&snooze, "snooze", "0s", "snooze")
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.meow.toml)")
+	rootCmd.PersistentFlags().StringVar(&config.CfgFile, "config", "", "config file (default is $HOME/.meow.toml)")
 }
 
 func initConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
+	if config.CfgFile != "" {
+		viper.SetConfigFile(config.CfgFile)
 	} else {
 		conf, err := os.UserConfigDir()
 		if err != nil {
@@ -102,7 +93,7 @@ func initConfig() {
 		os.Exit(1)
 	}
 
-	if err := viper.Unmarshal(&config); err != nil {
+	if err := viper.Unmarshal(&config.ToastConf); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

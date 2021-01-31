@@ -46,10 +46,10 @@ var remindCmd = &cobra.Command{
 
 		<-timer.C
 		if snooze != "0s" {
-			notice.Snooze(config.AppName, config.Title, note, snooze, config.Icon)
+			notice.Snooze(note, snooze)
 			return nil
 		}
-		notice.Pop(config.AppName, config.Title, note, config.Icon)
+		notice.Pop(note)
 		return nil
 	},
 }

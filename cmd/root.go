@@ -19,7 +19,6 @@ import (
 	"os"
 )
 
-// 読み込む設定の型
 type Config struct {
 	AppName string
 	Title   string
@@ -69,8 +68,6 @@ func newRootCmd() *cobra.Command {
 	}
 }
 
-// Execute adds all child commands to the root command and segots flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -87,7 +84,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.meow.toml)")
 }
 
-// initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
@@ -101,13 +97,11 @@ func initConfig() {
 		viper.SetConfigName(".meow")
 	}
 
-	// 設定ファイルを読み込む
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	// 設定ファイルの内容を構造体にコピーする
 	if err := viper.Unmarshal(&config); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

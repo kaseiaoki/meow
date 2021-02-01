@@ -1,4 +1,4 @@
 # File: $HOME/.meow.toml
-appName: "meow"
-title: "meow!"
-icon: "path/to/icon"
+AppName = "meow"
+Title = "meow!"
+Icon = "path/to/icon"
